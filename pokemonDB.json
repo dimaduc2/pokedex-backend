@@ -1,0 +1,71 @@
+[
+  {
+  "name": "ABC",
+  "image": "199 ABC.jpg",
+  "number": 199,
+  "type": [
+    "Normal", "Fire"
+  ],
+  "hp": 52,
+  "attack": 35,
+  "defense": 20,
+  "sp_atk": 35,
+  "sp_def": 65,
+  "speed": 25,
+  "heightM": 0.3,
+  "weightKG": 6.2
+  },
+
+  {
+  "name": "123",
+  "image": "99 ABC.jpg",
+  "number": 99,
+  "type": [
+    "Normal", "Fire"
+  ],
+  "hp": 52,
+  "attack": 35,
+  "defense": 20,
+  "sp_atk": 35,
+  "sp_def": 65,
+  "speed": 25,
+  "heightM": 0.3,
+  "weightKG": 6.2
+  },
+
+  {
+    "name": "DIMA",
+    "image": "111 ABC.jpg",
+    "number": 111,
+    "type": [
+      "Normal", "Fire"
+    ],
+    "hp": 52,
+    "attack": 35,
+    "defense": 20,
+    "sp_atk": 35,
+    "sp_def": 65,
+    "speed": 25,
+    "heightM": 0.3,
+    "weightKG": 6.2
+    },
+
+  {
+    "name": "Anakin",
+    "image": "111 ABC.jpg",
+    "number": 111,
+    "type": [
+      "Normal", "Fire"
+    ],
+    "hp": 52,
+    "attack": 35,
+    "defense": 20,
+    "sp_atk": 35,
+    "sp_def": 65,
+    "speed": 25,
+    "heightM": 0.3,
+    "weightKG": 6.2
+    }
+]
+
+

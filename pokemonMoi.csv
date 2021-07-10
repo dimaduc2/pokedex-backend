@@ -1,0 +1,10 @@
+name,number,image,type.0,type.1,type.2,hp,attack,defense,sp_atk,sp_def,speed,heightM,weightKG,evo_from,evo_to.0,evo_to.1,evo_to.2,evo_to.3,evo_to.4,evo_to.5,evo_to.6,evo_to.7
+Eevee,133,133 Eevee.jpg,Normal,,,55,55,50,45,65,55,0.3,6.5,,Vaporeon,Jolteon,Flareon,Espeon,Umbreon,Leafeon,Glaceon,Sylveon
+Vaporeon,134,133-134 Vaporeon.jpg,Water,,,130,65,60,110,95,65,1,29,Eevee,,,,,,,,
+Jolteon,135,133-135 Jolteon.jpg,Electric,,,65,65,60,110,95,130,0.8,24.5,Eevee,,,,,,,,
+Flareon,136,133-136 Flareon.jpg,Fire,,,65,130,60,95,110,65,0.9,25,Eevee,,,,,,,,
+Espeon,196,133-196 Espeon.jpg,Psychic,,,65,65,60,130,95,110,0.9,26.5,Eevee,,,,,,,,
+Umbreon,197,133-197 Umbreon.jpg,Dark,,,95,65,110,60,130,65,1,27,Eevee,,,,,,,,
+Leafeon,470,133-470 Leafeon.jpg,Grass,,,65,110,130,60,65,95,1,25,Eevee,,,,,,,,
+Glaceon,471,133-471 Glaceon.jpg,Ice,,,65,60,110,130,95,65,0.8,25.9,Eevee,,,,,,,,
+Sylveon,700,133-700 Sylveon.jpg,Fairy,,,95,65,65,110,130,60,1,23.5,Eevee,,,,,,,,

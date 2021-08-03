@@ -11,6 +11,7 @@ app.use(cors());
 app.use('/', pokedexRoutes);		        //bảo Router chỉ nhận câu hỏi bắt đầu ‘/hanhDong
 
 let pokedexModel = require('./pokemon.model');
+let pokeBallModel = require('./pokeball.model');
 
 const mongoose = require('mongoose');     //phải mượn Mongoose
 
@@ -24,9 +25,8 @@ const connection = mongoose.connection; //  <=> giữa server và DB
 // sau đó, mở kết nối để 2 bên nói chuyện
 // hiện ra, thông báo là nói chuyện đc rồi
 connection.once('open', function() {
-  console.log("Đã nói chuyện với MongoDB");  
-  
- })
+  console.log("Đã nói chuyện với MongoDB");    
+})
 
 
 
@@ -87,6 +87,27 @@ pokedexRoutes.route('/pokemon/:id').get(function(req, res) {
 
 
 
+pokedexRoutes.route('/pokeball').get(function(req, res) {
+  let nameBall = req.query.nameBall
+  // console.log(nameBall)
+  // pokeBallModel.find({}, function(err, tatCaThongTinPokeBall){
+  //   res.json(tatCaThongTinPokeBall = 'tất cả thông tin PokeBall')
+  // })
+  pokeBallModel.find({}, function(err, timPokeball){
+    if (err) {
+      console.log(err);
+      res.json('Không kết nối với MongoDB')
+    }
+    else {
+      console.log('đã tìm thấy ' + timPokeball.length + ' PokeBall')
+      res.json(timPokeball)
+    }
+  }).sort({[nameBall]:1, name:1})
+
+})
+
+
+
 pokedexRoutes.route('/pokemon').get(function(req, res) {
   let typePokemon = req.query.type;
   let thuTuPokemon = req.query.thuTu;
@@ -98,7 +119,7 @@ pokedexRoutes.route('/pokemon').get(function(req, res) {
         res.json('Không kết nối với MongoDB')
       }
       else {
-        console.log('đã tìm thấy ' + timPokedexs.length)
+        console.log('đã tìm thấy ' + timPokedexs.length + ' Pokemon')
         res.json(timPokedexs)
       }
     }).sort({[thuTuPokemon]:1, name:1})
@@ -175,4 +196,20 @@ pokedexRoutes.route('/pokemon/:idMuonSua').put(function(req, res) {
   // pokedexModel.find({_id: id}, function(err, ketQuaTimPokedexs){
   //   console.log('Đã tìm pokemon đã chọn '+ketQuaTimPokedexs)
   // })
+})
+
+
+
+
+pokedexRoutes.route('/pokeball/:idMuonXoa').delete(function(req, res) {
+  let id = req.params.idMuonXoa;
+  console.log(id)
+})
+
+pokedexRoutes.route('/pokeball/').post(function(req, res) {
+  console.log(req.body)
+})
+
+pokedexRoutes.route('/pokeball/:idMuonSua').put(function(req, res) {
+    res.json('Đã sửa')
 })

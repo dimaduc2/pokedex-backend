@@ -203,13 +203,17 @@ pokedexRoutes.route('/pokemon/:idMuonSua').put(function(req, res) {
 
 pokedexRoutes.route('/pokeball/:idMuonXoa').delete(function(req, res) {
   let id = req.params.idMuonXoa;
-  console.log(id)
+  console.log('Đã xóa '+id)
+  res.json('Đã xóa')
 })
 
 pokedexRoutes.route('/pokeball/').post(function(req, res) {
-  console.log(req.body)
+  console.log('Đã thêm '+req.body)
+  res.json('Đã thêm')
 })
 
 pokedexRoutes.route('/pokeball/:idMuonSua').put(function(req, res) {
+    let id = req.params.idMuonSua
+    console.log('Đã sửa '+id)
     res.json('Đã sửa')
 })

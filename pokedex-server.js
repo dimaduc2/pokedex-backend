@@ -88,7 +88,8 @@ pokedexRoutes.route('/pokemon/:id').get(function(req, res) {
 
 
 pokedexRoutes.route('/pokeball').get(function(req, res) {
-  let nameBall = req.query.nameBall
+  // let nameBall = req.query.nameBall
+  // req.params
   // console.log(nameBall)
   // pokeBallModel.find({}, function(err, tatCaThongTinPokeBall){
   //   res.json(tatCaThongTinPokeBall = 'tất cả thông tin PokeBall')
@@ -102,7 +103,8 @@ pokedexRoutes.route('/pokeball').get(function(req, res) {
       console.log('đã tìm thấy ' + timPokeball.length + ' PokeBall')
       res.json(timPokeball)
     }
-  }).sort({[nameBall]:1, name:1})
+  })
+  // .sort({[nameBall]:1, name:1})
 
 })
 
@@ -135,7 +137,7 @@ pokedexRoutes.route('/pokemon').get(function(req, res) {
 
 pokedexRoutes.route('/pokemon/:idMuonXoa').delete(function(req, res) {
   let id = req.params.idMuonXoa;
-  console.log(id)
+  console.log('Đã xóa '+id)
   pokedexModel.findByIdAndDelete(id, function (err) {
     if (err) {
       console.log(err);
@@ -151,7 +153,6 @@ pokedexRoutes.route('/pokemon/:idMuonXoa').delete(function(req, res) {
 })
 
 pokedexRoutes.route('/pokemon/').post(function(req, res) {
-  
   console.log(req.body)
   // res.json(req.body.name+'\n'+req.body.number)
   
@@ -204,12 +205,30 @@ pokedexRoutes.route('/pokemon/:idMuonSua').put(function(req, res) {
 pokedexRoutes.route('/pokeball/:idMuonXoa').delete(function(req, res) {
   let id = req.params.idMuonXoa;
   console.log('Đã xóa '+id)
-  res.json('Đã xóa')
+  pokeBallModel.findByIdAndDelete(id, function (err) {
+    if (err) {
+      console.log(err);
+    }
+    else{
+      console.log('Đã xóa ' + id);
+      res.json('Đã xóa')
+    }
+  })
+  // res.json('Đã xóa')
 })
 
 pokedexRoutes.route('/pokeball/').post(function(req, res) {
   console.log('Đã thêm '+req.body)
-  res.json('Đã thêm')
+  let pokeballMoi = new pokeBallModel(req.body);
+  pokeballMoi.save()
+            .then(pokeballMoi => {
+              // console.log('đã cho thêm tên pokemon mới: ' + pokeballMoi.name);
+              res.json('Đã thêm mới là '+req.body.name+'\n'+'và số là '+req.body.number)
+            })
+            .catch(err => {
+              console.log('Không lưu vào được Database')
+              // res.json('err DB')
+            })
 })
 
 pokedexRoutes.route('/pokeball/:idMuonSua').put(function(req, res) {

@@ -18,7 +18,7 @@ let pokedexModel = new Schema(
     evo_from: String,
     evo_to: [String],
   },
-  {collection: 'pokemon'}          //tên của collection trong MongoDB
+  {collection: 'Pokemon2'}          //tên của collection trong MongoDB
 );
 pokedexModel.index({name:'text', image:'text'})
 module.exports = mongoose.model('pokemon', pokedexModel);

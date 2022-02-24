@@ -104,7 +104,7 @@ pokedexRoutes.route('/pokeball').get(function(req, res) {
       res.json(timPokeball)
     }
   })
-  // .sort({[nameBall]:1, name:1})
+  .sort({name:1})
 
 })
 
@@ -113,26 +113,168 @@ pokedexRoutes.route('/pokeball').get(function(req, res) {
 pokedexRoutes.route('/pokemon').get(function(req, res) {
   let typePokemon = req.query.type;
   let thuTuPokemon = req.query.thuTu;
-  if(typePokemon==='all'){
+  let thuTuXuoiNguoc = req.query.xuoiNguoc;
+
+  // Nếu muốn tìm tất cả Pokemon 
+  if(typePokemon==='all' || typePokemon==='All'){
     console.log(thuTuPokemon)
-    pokedexModel.find({}, function(err, timPokedexs){
-      if (err) {
-        console.log(err);
-        res.json('Không kết nối với MongoDB')
-      }
-      else {
-        console.log('đã tìm thấy ' + timPokedexs.length + ' Pokemon')
-        res.json(timPokedexs)
-      }
-    }).sort({[thuTuPokemon]:1, name:1})
+    // thì bảo MongoDB tìm tất cả không điều kiện
+    // pokedexModel.find({}, function(err, timPokedexs){
+    //                   if (err) {
+    //                     console.log(err);
+    //                     res.json('Không kết nối với MongoDB')
+    //                   }
+    //                   else {
+    //                     console.log('đã tìm thấy ' + timPokedexs.length + ' Pokemon')
+    //                     res.json(timPokedexs)
+    //                   }
+    //             }).sort({[thuTuPokemon]:1,})
+
+    console.log('Ở trong có số '+thuTuXuoiNguoc)
+    if(thuTuXuoiNguoc==='1'){
+      console.log('1 là xuôi pokemon=xfgfgvghbgh')
+      pokedexModel.find({}, function(err, timPokedexs){
+        if (err) {
+          console.log(err);
+          res.json('Không kết nối với MongoDB')
+        }
+        else {
+          console.log('đã tìm thấy ' + timPokedexs.length + ' Pokemon')
+          res.json(timPokedexs)
+        }
+      }).sort({[thuTuPokemon]:1,})
+    }
+    else{
+      console.log('-1 là ngược pokemon112356')
+      pokedexModel.find({}, function(err, timPokedexs){
+        if (err) {
+          console.log(err);
+          res.json('Không kết nối với MongoDB')
+        }
+        else {
+          console.log('đã tìm thấy ' + timPokedexs.length + ' Pokemon')
+          res.json(timPokedexs)
+        }
+      }).sort({[thuTuPokemon]:-1,})
+    }
+
   }
+  // Nếu tìm những Pokemon liên quan đến 1 sức mạnh
   else{
-    console.log('Tìm sức mạnh tất cả của Pokemon là '+typePokemon)
+    console.log('Tìm Pokemon theo thứ tự ' + thuTuPokemon + ' và Tìm Pokemon liên quan sức mạnh ' + typePokemon)
     pokedexModel.find({type: typePokemon}, function(err, ketQuaTimPokemon){
       // console.log('Đã tìm ra Pokemon liên quan '+typePokemon+' là: '+ketQuaTimPokemon)
       res.json(ketQuaTimPokemon)
-    })
+    }).sort({[thuTuPokemon]:1,})
+
+    // if(thuTuXuoiNguoc==='1'){
+    //   pokedexModel.find({type: typePokemon}, function(err, timPokedexs){
+    //     if (err) {
+    //       console.log(err);
+    //       res.json('Không kết nối với MongoDB')
+    //     }
+    //     else {
+    //       console.log('đã tìm thấy ' + timPokedexs.length + ' Pokemon')
+    //       res.json(timPokedexs)
+    //     }
+    //   }).sort({[thuTuPokemon]:1,})
+    // }
+    // else{
+    //   pokedexModel.find({type: typePokemon}, function(err, timPokedexs){
+    //     if (err) {
+    //       console.log(err);
+    //       res.json('Không kết nối với MongoDB')
+    //     }
+    //     else {
+    //       console.log('đã tìm thấy ' + timPokedexs.length + ' Pokemon')
+    //       res.json(timPokedexs)
+    //     }
+    //   }).sort({[thuTuPokemon]:-1,})
+    // }
+
   }
+})
+
+
+
+pokedexRoutes.route('/timPokemon').get(function(req, res) {
+  let thongTinCanTim = req.query.thongTinCanTim
+  let dieuKien = {}
+  
+  if(isNaN(thongTinCanTim)===true){
+    dieuKien={$or: [{name : thongTinCanTim}, {evo_from : thongTinCanTim}, {evo_to : thongTinCanTim}]}
+  }else{
+    dieuKien={$or: [{hp : Number(thongTinCanTim)}, {attack : Number(thongTinCanTim)}, {defense : Number(thongTinCanTim)}, 
+      {sp_atk : Number(thongTinCanTim)}, {sp_def : Number(thongTinCanTim)}, {speed : Number(thongTinCanTim)}]}
+  }
+
+  pokedexModel.find(dieuKien, function(err, timDuocTen){
+    if(timDuocTen.length===0){
+    console.log('Không có tên trong danh sách')
+    res.json(timDuocTen)
+    }else{
+      console.log(timDuocTen)
+    res.json(timDuocTen)
+    }
+  })
+
+  
+
+
+
+  // if(isNaN(thongTinCanTim)===true){
+
+  //   pokedexModel.find({$or: [
+    
+  //     {name : thongTinCanTim}, {evo_from : thongTinCanTim}, {evo_to : thongTinCanTim}
+    
+  //   ]}, function(err, timDuocTen){
+  //     if(timDuocTen.length===0){
+  //     console.log('Không có tên trong danh sách')
+  //     res.json(timDuocTen)
+  //     }else{
+  //       console.log(timDuocTen)
+  //     res.json(timDuocTen)
+  //     }
+  //   })
+
+  // }
+  // else{
+
+  //   pokedexModel.find({$or: [
+      
+  //     {hp : Number(thongTinCanTim)}, {attack : Number(thongTinCanTim)}, {defense : Number(thongTinCanTim)}, 
+  //     {sp_atk : Number(thongTinCanTim)}, {sp_def : Number(thongTinCanTim)}, {speed : Number(thongTinCanTim)}
+      
+  //   ]}, function(err, timDuocTen){
+  //     if(timDuocTen.length===0){
+  //     console.log('Không có tên trong danh sách')
+  //     res.json(timDuocTen)
+  //     }else{
+  //       console.log(timDuocTen)
+  //     res.json(timDuocTen)
+  //     }
+  //   })
+
+  // }
+
+
+
+
+
+
+
+})
+
+
+
+pokedexRoutes.route('/pokemonLen').get(function(req, res) {
+  let lenTren = req.query.lenTren;
+  console.log(lenTren)
+})
+pokedexRoutes.route('/pokemonXuong').get(function(req, res) {
+  let xuongDuoi = req.query.xuongDuoi;
+  console.log(xuongDuoi)
 })
 
 pokedexRoutes.route('/pokemon/:idMuonXoa').delete(function(req, res) {
@@ -173,6 +315,8 @@ pokedexRoutes.route('/pokemon/').post(function(req, res) {
   // ten.push(tenMoi)
   // console.log(ten)
 })
+
+
 
 pokedexRoutes.route('/pokemon/:idMuonSua').put(function(req, res) {
   let id = req.params.idMuonSua;
@@ -233,6 +377,9 @@ pokedexRoutes.route('/pokeball/').post(function(req, res) {
 
 pokedexRoutes.route('/pokeball/:idMuonSua').put(function(req, res) {
     let id = req.params.idMuonSua
+    console.log('Tên Pokeball là: '+req.body.name)
     console.log('Đã sửa '+id)
     res.json('Đã sửa')
 })
+
+

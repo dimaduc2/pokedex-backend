@@ -195,7 +195,116 @@ pokedexRoutes.route('/pokemon').get(function(req, res) {
   }
 })
 
+pokedexRoutes.route('/timMotPokemon').get(function(req, res) {
+  let ten = req.query.ten
+  // console.log(ten)
+  pokedexModel.find({$or: [{name: ten}, {evo_from: ten}, {evo_to: ten}]}, function(err, timDuocPokemon){
+    // res.json(timDuocPokemon)
 
+    var cauTraLoiRoRang={'pokemonTimThay': {}, 'pokemonEvoFrom': {}, 'pokemonEvoTo': []}
+    
+    for(var i=0; i<timDuocPokemon.length; i++){
+
+
+      if(timDuocPokemon[i].name===ten){
+        cauTraLoiRoRang.pokemonTimThay=timDuocPokemon[i]
+      }
+
+      
+      if(timDuocPokemon[i].evo_to.includes(ten)){
+        cauTraLoiRoRang.pokemonEvoFrom=timDuocPokemon[i]
+      }
+      // for(var j=0; j<timDuocPokemon[i].evo_to.length; j++){
+      //   if(timDuocPokemon[i].evo_to[j] === ten){
+      //     cauTraLoiRoRang.pokemonEvoFrom=timDuocPokemon[i]
+      //   }
+      // }
+
+
+      if(timDuocPokemon[i].evo_from===ten){
+        cauTraLoiRoRang.pokemonEvoTo.push(timDuocPokemon[i])
+      }
+
+    }
+    
+    res.json(cauTraLoiRoRang)
+    
+  })
+
+
+
+
+  // pokedexModel.find({name: ten}, function(err, timDuocPokemon){
+  //   if(timDuocPokemon[0].evo_from){
+  //     pokedexModel.find({name: timDuocPokemon[0].evo_from}, function(err, timDuocTenEvoFrom){
+  //       console.log(timDuocTenEvoFrom)
+  //       timDuocPokemon.push({image: timDuocTenEvoFrom[0].image, name: timDuocTenEvoFrom[0].name})
+  //       if(timDuocPokemon[0].evo_to.length>0){
+  //         pokedexModel.find({name: timDuocPokemon[0].evo_to}, function(err, timDuocTenEvoTo){
+  //           console.log(timDuocTenEvoTo)
+  //           for(var i=0; i<timDuocPokemon[0].evo_to.length; i++){
+  //             timDuocPokemon.push({image: timDuocTenEvoTo[i].image, name: timDuocTenEvoTo[i].name})
+  //           }
+  //           res.json(timDuocPokemon)
+  //         })
+  //       }else{
+  //         timDuocPokemon.push('')
+  //         res.json(timDuocPokemon)
+  //       }
+  //     })
+  //   }
+  //   else{
+  //     pokedexModel.find({name: timDuocPokemon[0].evo_to}, function(err, timDuocTenEvoTo){
+  //       console.log(timDuocTenEvoTo)
+  //       timDuocPokemon.push('')
+  //       if(timDuocPokemon[0].evo_to.length===0){
+  //         timDuocPokemon.push('')
+  //       }else{
+  //         for(var i=0; i<timDuocPokemon[0].evo_to.length; i++){
+  //           timDuocPokemon.push({image: timDuocTenEvoTo[i].image, name: timDuocTenEvoTo[i].name})
+  //         }
+  //       }
+  //       res.json(timDuocPokemon)
+  //     })
+  //   }
+  // })
+    
+})
+
+pokedexRoutes.route('/timThongTinSucKhoePokemon').get(function(req, res) {
+  let thongTinTim = req.query.thongTinTim
+  let dauTim = req.query.dauTim
+  let soTim = req.query.soTim
+  // console.log(thongTinTim + ' ' + dauTim + ' ' + soTim)
+  
+
+  if(dauTim==='='){
+    pokedexModel.find({[thongTinTim]: {$eq: soTim}}, function(err, ketQuaTimPokemon){ // bằng
+      console.log(ketQuaTimPokemon)
+      res.json(ketQuaTimPokemon)
+    })
+  }
+  else if(dauTim==='<'){
+    pokedexModel.find({[thongTinTim]: {$lt: soTim}}, function(err, ketQuaTimPokemon){ // nhỏ
+      console.log(ketQuaTimPokemon)
+      res.json(ketQuaTimPokemon)
+    })
+  }
+  else if(dauTim==='>'){
+    pokedexModel.find({[thongTinTim]: {$gt: soTim}}, function(err, ketQuaTimPokemon){ // lớn
+      console.log(ketQuaTimPokemon)
+      res.json(ketQuaTimPokemon)
+    })
+  }
+  
+  
+  
+      
+
+
+
+  
+})
 
 pokedexRoutes.route('/timPokemon').get(function(req, res) {
   let thongTinCanTim = req.query.thongTinCanTim
@@ -205,7 +314,7 @@ pokedexRoutes.route('/timPokemon').get(function(req, res) {
     dieuKien={$or: [{name : thongTinCanTim}, {evo_from : thongTinCanTim}, {evo_to : thongTinCanTim}]}
   }else{
     dieuKien={$or: [{hp : Number(thongTinCanTim)}, {attack : Number(thongTinCanTim)}, {defense : Number(thongTinCanTim)}, 
-      {sp_atk : Number(thongTinCanTim)}, {sp_def : Number(thongTinCanTim)}, {speed : Number(thongTinCanTim)}]}
+            {sp_atk : Number(thongTinCanTim)}, {sp_def : Number(thongTinCanTim)}, {speed : Number(thongTinCanTim)}]}
   }
 
   pokedexModel.find(dieuKien, function(err, timDuocTen){
@@ -297,7 +406,6 @@ pokedexRoutes.route('/pokemon/:idMuonXoa').delete(function(req, res) {
 pokedexRoutes.route('/pokemon/').post(function(req, res) {
   console.log(req.body)
   // res.json(req.body.name+'\n'+req.body.number)
-  
   let pokedexMoi = new pokedexModel(req.body);
   pokedexMoi.save()
             .then(pokedexMoi => {
@@ -376,10 +484,82 @@ pokedexRoutes.route('/pokeball/').post(function(req, res) {
 })
 
 pokedexRoutes.route('/pokeball/:idMuonSua').put(function(req, res) {
-    let id = req.params.idMuonSua
-    console.log('Tên Pokeball là: '+req.body.name)
-    console.log('Đã sửa '+id)
-    res.json('Đã sửa')
+  let id = req.params.idMuonSua
+  console.log('Tên Pokeball là: '+req.body.name)
+  console.log('Đã sửa '+id)
+  res.json('Đã sửa')
 })
 
+var daCoUaThich = []
+pokedexRoutes.route('/tenUaThich').get(function(req, res) {
+  let ten = req.query.ten
+  console.log('Ten'+ten+'123')
+  if(ten){
+    daCoUaThich.push(ten)
+  }
+  res.json(daCoUaThich)
+})
 
+pokedexRoutes.route('/suaPokemon/:id').put(function(req, res) {
+  let id = req.params.id
+  console.log(id + ' và ' + req.body.name)
+  let pokedexMoi = new pokedexModel(req.body);
+  pokedexModel.findByIdAndUpdate(id, req.body, function (err, docs) {
+                  if (err){
+                    console.log(err)
+
+                  }
+                  else{
+                      console.log("Thay đổi thành công", docs);
+                      res.json("Thay đổi thành công")
+                  }
+  })
+})
+
+pokedexRoutes.route('/themPokemonMoi/').post(function(req, res) {
+  console.log(req.body)
+  let pokedexMoi = new pokedexModel(req.body);
+  pokedexMoi.save()
+            .then(pokedexMoi => {
+              console.log('đã cho thêm tên pokemon mới: ' + pokedexMoi);
+              res.json('Đã cho thêm pokemon mới: ' + pokedexMoi)
+              // res.json('Đã thêm mới là '+req.body.name+'\n'+'và số là '+req.body.number)
+            })
+            .catch(err => {
+              console.log('503: Không lưu vào được Database')
+              res.status(503).send('Không lưu vào được Database')
+            })
+})
+// pokedexRoutes.route('/themPokemonMoi').get(function(req, res) {
+//   let tenMoi = req.query.tenMoi
+//   let numberMoi = req.query.numberMoi
+//   let typeMoi = req.query.typeMoi
+//   let hpMoi = req.query.hpMoi
+//   let attackMoi = req.query.attackMoi
+//   let defenseMoi = req.query.defenseMoi
+//   let sp_atkMoi = req.query.sp_atkMoi
+//   let sp_defMoi = req.query.sp_defMoi
+//   let speedMoi = req.query.speedMoi
+//   let heightMMoi = req.query.heightMMoi
+//   let weightKGMoi = req.query.weightKGMoi
+//   let evo_FromMoi = req.query.evo_FromMoi
+//   let evo_toMoi = req.query.evo_toMoi
+//   console.log(tenMoi)
+// })
+
+pokedexRoutes.route('/xoaThongTin/:id').delete(function(req, res) {
+  let thuTu = req.query.thuTu
+  let id = req.params.id
+  pokedexModel.findByIdAndDelete(id, function (err) {
+    if (err) {
+      console.log(err);
+    }
+    else{
+      console.log('Đã xóa ' + id);
+      res.json('Đã xóa ' + id)
+      // pokedexModel.find({}, function(err, danhSachSauKhiXoa){
+      //   res.json(danhSachSauKhiXoa)
+      // }).sort({[thuTu]:1,})
+    }
+  })
+})
